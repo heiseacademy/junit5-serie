@@ -5,7 +5,6 @@ import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpPrincipal;
 import com.svenruppert.junit5.basics.c03.example.GreetHandler;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,8 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GreetHandlerTest {
 
@@ -67,14 +64,13 @@ public class GreetHandlerTest {
   }
 
 
-
   private static class MockHttpExchange extends HttpExchange {
     private final String requestMethod;
     private final ByteArrayOutputStream responseBody = new ByteArrayOutputStream();
-    private int responseCode;
     private final Map<String, String> requestHeaders = new HashMap<>();
     private final Map<String, String> responseHeaders = new HashMap<>();
     private final InputStream requestBody;
+    private int responseCode;
 
     public MockHttpExchange(String path, String requestMethod, String requestBody) {
       this.requestMethod = requestMethod;
@@ -116,7 +112,6 @@ public class GreetHandlerTest {
     public int getResponseCode() {
       return responseCode;
     }
-
 
 
     @Override

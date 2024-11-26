@@ -3,7 +3,7 @@ package junit.com.svenruppert.junit5.basics.c03.example;
 import com.svenruppert.junit5.basics.c03.example.GreetService;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class GreetServiceTest {
   @Test
