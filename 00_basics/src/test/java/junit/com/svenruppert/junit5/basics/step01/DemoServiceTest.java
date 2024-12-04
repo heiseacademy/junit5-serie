@@ -1,6 +1,7 @@
 package junit.com.svenruppert.junit5.basics.step01;
 
 import com.svenruppert.junit5.basics.step01.DemoService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 class DemoServiceTest {
@@ -14,6 +15,7 @@ class DemoServiceTest {
   }
 
   @Test
+  @Disabled
   void test001() {
     throw new NullPointerException("Einfach so");
   }
