@@ -11,6 +11,9 @@ public class RestService {
   public static final int PORT = 8080;
   private static HttpServer server;
 
+  private RestService() {
+  }
+
   public static void main(String[] args) throws IOException {
     startServer();
   }
