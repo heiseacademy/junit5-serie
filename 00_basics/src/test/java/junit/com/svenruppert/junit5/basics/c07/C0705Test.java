@@ -1,66 +1,25 @@
 package junit.com.svenruppert.junit5.basics.c07;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class C0705Test {
 
-  public static class Calculator {
-    private int result;
+  @Test
+  void test001(TestInfo testInfo, TestReporter testReporter) {
+    assertNotNull(testReporter);
+    assertNotNull(testInfo);
 
-    public Calculator() { this.result = 0; }
+    //System.out.println("testInfo.getDisplayName() = " + testInfo.getDisplayName());
 
-    public void reset(){ result = 0; }
-    public void resetTo(int a){ result = a; }
-
-    public int add(int a) { return result + a;}
-    public int sub(int a) { return result - a; }
-    public int mul(int a) { return result * a; }
-    public int div(int a) {
-      if (a == 0) {
-        throw new ArithmeticException("Division by zero is not allowed.");
-      }
-      return result / a;
-    }
-  }
-  public interface DemoTest {
-
-    @BeforeEach
-    default void doBefore(){
-      System.out.println("Before each test");
-      getCalculator().reset();
-    }
-
-    @AfterEach
-    default void doAfter(){
-      System.out.println("After each test");
-      getCalculator().reset();
-    }
-
-    @Test
-    default void divideByZero(){
-      Calculator calculator = getCalculator();
-      assertNotNull(calculator);
-      assertThrows(ArithmeticException.class,()-> calculator.div(0));
-    }
-    Calculator getCalculator();
+    testReporter.publishEntry("PreFix " + testInfo.getDisplayName());
   }
 
-  public static class AddTests
-      implements DemoTest {
-
-    @Test
-    void additionTest() {
-      assertEquals(2, getCalculator().add(2));
-    }
-
-    @Override
-    public Calculator getCalculator() {
-      return new Calculator();
-    }
+  @RepeatedTest(2)
+  void test002(RepetitionInfo repetitionInfo, TestReporter testReporter) {
+    assertNotNull(testReporter);
+    assertNotNull(repetitionInfo);
+    testReporter.publishEntry("Wiederholung Nr. " + repetitionInfo.getCurrentRepetition());
   }
-
 }

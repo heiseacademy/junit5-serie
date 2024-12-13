@@ -4,8 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class C0704Test {
 
@@ -28,56 +27,38 @@ public class C0704Test {
     }
   }
 
-  //Nested Tests
-  Calculator calculator;
+  private Calculator calculator;
 
   @BeforeEach
-  void setup() {
+  void setUp() {
+    System.out.println("BeforeEach C0704Test ");
     calculator = new Calculator();
   }
 
   @Test
   void additionTest() {
+    calculator.reset();
     assertEquals(2, calculator.add(2));
   }
 
   @Nested
-  class SubtractionTests {
+  class SubstractionTests {
 
     @BeforeEach
-    void setup() {
-      // Diese Setup-Methode gilt nur für die Tests in dieser Klasse.
+    void setUp() {
+      System.out.println("BeforeEach SubstractionTests ");
       calculator.resetTo(5);
     }
 
     @Test
-    void subtractPositiveNumbers() {
+    void subPosNumbers() {
+
       assertEquals(3, calculator.sub(2));
     }
-
     @Test
-    void subtractWithNegativeResult() {
+    void subNegNumbers() {
       assertEquals(-1, calculator.sub(6));
     }
   }
 
-  @Nested
-  class DivisionTests {
-
-    @BeforeEach
-    void setup() {
-      // Diese Setup-Methode gilt nur für die Tests in dieser Klasse.
-      calculator.resetTo(6);
-    }
-    @Test
-    void divideByNonZero() {
-      assertEquals(2, calculator.div(3));
-    }
-
-    @Test
-    void divideByZeroThrowsException() {
-      // Hier kann eine Exception erwartet werden
-      assertThrows(ArithmeticException.class, () -> calculator.div(0));
-    }
-  }
 }

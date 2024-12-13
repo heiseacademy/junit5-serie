@@ -5,63 +5,71 @@ import org.junit.jupiter.api.parallel.Execution;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.System.out;
+import static java.lang.Thread.currentThread;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.parallel.ExecutionMode.CONCURRENT;
 
 @Execution(CONCURRENT)
 public class C0703Test {
 
-  //parallel Execution
-  //junit-platform.properties
-  //junit.jupiter.execution.parallel.enabled = true
-  //junit.jupiter.execution.parallel.mode.default = concurrent
-  //junit.jupiter.execution.parallel.config.strategy = dynamic
-
   @Test
-  void test1() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 1 - " + Thread.currentThread().getName());
+  void test001() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 001 " + currentThread().getName());
   }
 
   @Test
-  void test2() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 2 - " + Thread.currentThread().getName());
+  void test002() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 002 " + currentThread().getName());
   }
 
   @Test
-  void test3() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 3 - " + Thread.currentThread().getName());
+  void test003() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 003 " + currentThread().getName());
   }
 
   @Test
-  void test4() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 4 - " + Thread.currentThread().getName());
+  void test004() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 004 " + currentThread().getName());
   }
 
   @Test
-  void test5() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 5 - " + Thread.currentThread().getName());
+  void test005() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 005 " + currentThread().getName());
   }
 
   @Test
-  void test6() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 6 - " + Thread.currentThread().getName());
+  void test006() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 006 " + currentThread().getName());
   }
 
   @Test
-  void test7() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 7 - " + Thread.currentThread().getName());
+  void test007() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 007 " + currentThread().getName());
   }
 
   @Test
-  void test8() throws InterruptedException {
-    TimeUnit.SECONDS.sleep(2);
-    System.out.println("Running Test 8 - " + Thread.currentThread().getName());
+  void test008() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 008 " + currentThread().getName());
   }
 
+  @Test
+  void test009() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 009 " + currentThread().getName());
+  }
+
+  @Test
+  void test010() throws InterruptedException {
+    SECONDS.sleep(2);
+    out.println("Running Test 010 " + currentThread().getName());
+  }
 }
