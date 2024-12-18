@@ -9,7 +9,7 @@
         <version>00.00.01-SNAPSHOT</version>
     </parent>
 
-    <artifactId>00_examples</artifactId>
+    <artifactId>05_examples</artifactId>
 
     <properties>
 
