@@ -1,0 +1,85 @@
+package com.svenruppert.junit5.basics.c06.example.services.user;
+
+import com.svenruppert.dependencies.core.logger.HasLogger;
+import com.svenruppert.junit5.basics.c06.example.services.CreateEntityResponse;
+import com.svenruppert.junit5.basics.c06.example.services.DeleteEntityResponse;
+import com.svenruppert.junit5.basics.c06.example.services.UpdateEntityResponse;
+import com.svenruppert.junit5.basics.c06.example.services.login.Login;
+import com.svenruppert.junit5.basics.c06.example.services.login.LoginService;
+
+import static com.svenruppert.junit5.basics.c06.example.services.login.LoginRepository.ANONYMOUS_LOGIN;
+import static com.svenruppert.junit5.basics.c06.example.services.user.UserRepository.ANONYMOUS_USER;
+
+public class UserService implements HasLogger {
+
+  private final UserRepository userRepository;
+  private final LoginService loginService;
+
+  public UserService(UserRepository userRepository,
+                     LoginService loginService) {
+    this.userRepository = userRepository;
+    this.loginService = loginService;
+  }
+
+  public DeleteEntityResponse<User> deleteUser(User user) {
+    User userToDelete = userRepository.userByUID(user.uid());
+    if (userToDelete.equals(ANONYMOUS_USER)) {
+      return new DeleteEntityResponse<>(false, "User ANONYMOUS can not be deleted", ANONYMOUS_USER);
+    }
+    if (user.equals(userToDelete)) {
+      Login loginToDelete = loginService.userLoginByUID(user.uid());
+      if (loginToDelete.equals(ANONYMOUS_LOGIN)) {
+        return new DeleteEntityResponse<>(false, "User ANONYMOUS can not be deleted", ANONYMOUS_USER);
+      } else {
+        DeleteEntityResponse<User> deleteEntityResponse = userRepository.deleteUser(userToDelete);
+        if (deleteEntityResponse.deleted()) {
+          return deleteEntityResponse;
+        } else {
+          if (loginService.storeNewLogin(loginToDelete).created()) {
+            return new DeleteEntityResponse<>(false, "User " + user.uid() + " was not deleted", ANONYMOUS_USER);
+          } else {
+            logger().error("Login {} deletion could not rolled back", loginToDelete.uid());
+            logger().error("Login TO RE_CREATE {}", loginToDelete);
+            throw new RuntimeException("Login " + loginToDelete.uid() + " deletion could not rolled back");
+          }
+        }
+      }
+    } else {
+      return new DeleteEntityResponse<>(false, "User are not equal for UID: " + user.uid(), ANONYMOUS_USER);
+    }
+  }
+
+  public User userByUserName(String username) {
+    Login login = loginService.userLoginByLoginName(username);
+    return userByUID(login.uid());
+  }
+
+  public User userByUID(int uid) {
+    return userRepository.userByUID(uid);
+  }
+
+  public User userByLogin(Login login) {
+    return userRepository.userByUID(login.uid());
+  }
+
+
+  public CreateEntityResponse<User> createUser(String loginName,
+                                               String password,
+                                               String forename,
+                                               String surname) {
+    logger().info("try to create user {}", loginName);
+    CreateEntityResponse<Login> isLoginCreated = loginService.createLogin(loginName, password);
+    if (!isLoginCreated.created()) {
+      return new CreateEntityResponse<>(false, isLoginCreated.message(), ANONYMOUS_USER);
+    } else {
+      logger().warn("Login is created.. start creating User {}", loginName);
+      Login login = loginService.userLoginByLoginName(loginName);
+      return userRepository.createUser(login.uid(), forename, surname);
+    }
+  }
+
+  public UpdateEntityResponse<Login> updatePassword(int uid, String passwordOld, String passwordNew) {
+    return loginService.changePassword(uid, passwordOld, passwordNew);
+  }
+
+}
