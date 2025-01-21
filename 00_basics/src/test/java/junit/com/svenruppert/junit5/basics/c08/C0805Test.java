@@ -8,56 +8,46 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static junit.com.svenruppert.junit5.basics.c08.C0805Test.DBLifeCycle.KEY;
-import static junit.com.svenruppert.junit5.basics.c08.C0805Test.DBLifeCycle.NAMESPACE;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class C0805Test {
-
-  @Retention(RetentionPolicy.RUNTIME)
-  @Target(ElementType.PARAMETER)
-  @ExtendWith(DBConnectionParameterResolver.class)
-  public @interface DB {
-  }
 
   @ExtendWith(DBLifeCycle.class)
   public static class DemoClass {
     @Test
     void test001(@DB DBConnection connection) {
       assertNotNull(connection);
-      connection.execute("CREATE DATABASE IF NOT EXISTS test");
+      String execute = connection.execute("CREATE DATABASE IF NOT EXISTS test");
+      assertNotNull(execute);
     }
   }
 
   public static class DBConnection {
     private String url;
-
     public DBConnection(String url) {
       this.url = url;
     }
 
-    public void connect() {
-      System.out.println("..connected to " + url);
+    public String execute(String sql) {
+      System.out.println("..execute query " + sql);
+      return "executed .. " + sql;
     }
-
-    public String execute(String query) {
-      System.out.println("..execute query " + query);
-      return "executed .. " + query;
-    }
-
-    public void disconnect() {
-      System.out.println("...disconnected from " + url);
-    }
+    public void connect() { System.out.println("connect ..." + url); }
+    public void disconnect() { System.out.println("disconnect ..." + url); }
   }
 
-  public static class DBConnectionParameterResolver
-      implements ParameterResolver {
+  @Retention(RetentionPolicy.RUNTIME)
+  @Target({ElementType.PARAMETER})
+  @ExtendWith(DBConnectionParameterResolver.class)
+  public @interface DB {}
+
+  public static class DBConnectionParameterResolver implements ParameterResolver {
 
     @Override
     public boolean supportsParameter(ParameterContext parameterContext,
                                      ExtensionContext extensionContext)
         throws ParameterResolutionException {
-      System.out.println("supportsParameter()");
+      System.out.println("supportsParameter: " + parameterContext.getParameter());
       return parameterContext.getParameter().getType() == DBConnection.class;
     }
 
@@ -65,33 +55,36 @@ class C0805Test {
     public Object resolveParameter(ParameterContext parameterContext,
                                    ExtensionContext extensionContext)
         throws ParameterResolutionException {
-      System.out.println("resolveParameter()");
-      ExtensionContext.Store contextStore = extensionContext.getStore(NAMESPACE);
-      return contextStore.get(KEY, DBConnection.class);
+      System.out.printf("resolveParameter: %s%n", parameterContext.getParameter());
+
+      ExtensionContext.Store store = extensionContext.getStore(DBLifeCycle.NAMESPACE);
+      return store.get(DBLifeCycle.KEY, DBConnection.class);
     }
   }
 
-  public static class DBLifeCycle
-      implements BeforeAllCallback, AfterAllCallback {
-    public static final ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(DBLifeCycle.class);
-    public static String KEY = DBConnection.class.getSimpleName();
+
+  public static class DBLifeCycle implements BeforeAllCallback, AfterAllCallback {
+
+    public static ExtensionContext.Namespace NAMESPACE = ExtensionContext.Namespace.create(DBLifeCycle.NAMESPACE_NAME);
+    private static final String NAMESPACE_NAME = "DBCONNECTION";
+    public static final String KEY = "DBConnectionKEY";
 
     @Override
     public void afterAll(ExtensionContext context) throws Exception {
-      System.out.println("afterAll()");
-      ExtensionContext.Store ctxStore = context.getStore(NAMESPACE);
-      DBConnection dbConnection = ctxStore.get(KEY, DBConnection.class);
+      System.out.println("afterAll");
+      ExtensionContext.Store store = context.getStore(NAMESPACE);
+      DBConnection dbConnection = store.get(KEY, DBConnection.class);
       dbConnection.disconnect();
-      ctxStore.remove(KEY);
+      store.remove(KEY, DBConnection.class);
     }
 
     @Override
     public void beforeAll(ExtensionContext context) throws Exception {
-      System.out.println("beforeAll()");
-      ExtensionContext.Store ctxStore = context.getStore(NAMESPACE);
-      DBConnection connection = new DBConnection("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
-      connection.connect();
-      ctxStore.put(KEY, connection);
+      System.out.println("beforeAll");
+      ExtensionContext.Store store = context.getStore(NAMESPACE);
+      DBConnection dbConnection = new DBConnection("jdbc:h2:mem:test");
+      dbConnection.connect();
+      store.put(DBLifeCycle.KEY, dbConnection);
     }
   }
 

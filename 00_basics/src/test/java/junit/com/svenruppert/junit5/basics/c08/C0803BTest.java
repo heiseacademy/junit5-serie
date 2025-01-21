@@ -19,42 +19,45 @@ class C0803BTest {
   private static final Logger log = LoggerFactory.getLogger(C0803BTest.class);
 
   @Retention(RetentionPolicy.RUNTIME)
-  @Target({ElementType.FIELD})
-  public @interface FieldMarker { }
+  @Target(ElementType.FIELD)
+  public @interface FieldMarker{}
+
 
   @ExtendWith(ServiceFactoryFieldPostProcessor.class)
   static class DemoClass {
 
     @FieldMarker private Service service;
+    private String demoField;
 
     @Test
     void test001() {
       assertNotNull(service);
       String helloWorld = service.doWork("Hello World");
       assertNotNull(helloWorld);
-      assertEquals("-- SubService -- Hello World processed by Service ", helloWorld);
+      assertEquals("Hello World processed by Service", helloWorld);
     }
   }
 
   public static class Service {
-    public String doWork(String input) {
-      return input + " processed by Service ";
-    }
+    public String doWork(String input){ return input + " processed by Service"; }
   }
 
   public static class ServiceFactoryFieldPostProcessor
-      implements TestInstancePostProcessor {
+      implements TestInstancePostProcessor{
+
+
     @Override
     public void postProcessTestInstance(Object testInstance,
                                         ExtensionContext context)
         throws Exception {
 
       Class<?> testInstanceClass = testInstance.getClass();
-      log.info("TestInstance: %s".formatted(testInstanceClass.getName()));
+      log.info(testInstanceClass.getName());
+
       Field[] fields = testInstanceClass.getDeclaredFields();
       for (Field field : fields) {
-        log.info("Field: %s".formatted(field.getName()));
-        if (field.isAnnotationPresent(FieldMarker.class)) {
+        log.info(field.getName());
+        if(field.isAnnotationPresent(FieldMarker.class)){
           field.setAccessible(true);
           Service service = new Service();
           field.set(testInstance, service);
@@ -63,4 +66,5 @@ class C0803BTest {
       }
     }
   }
+
 }

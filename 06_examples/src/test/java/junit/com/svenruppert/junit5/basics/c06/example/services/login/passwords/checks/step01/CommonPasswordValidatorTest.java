@@ -2,6 +2,7 @@ package junit.com.svenruppert.junit5.basics.c06.example.services.login.passwords
 
 import com.svenruppert.junit5.basics.c06.example.services.login.passwords.PasswordCheckResult;
 import com.svenruppert.junit5.basics.c06.example.services.login.passwords.checks.CommonPasswordValidator;
+import com.svenruppert.junit5.basics.c06.example.services.login.passwords.checks.PasswordValidator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -17,7 +18,7 @@ class CommonPasswordValidatorTest {
       "Hz&tGfR , true"
   })
   void test001(String input, Boolean expected) {
-    CommonPasswordValidator validator = new CommonPasswordValidator();
+    PasswordValidator validator = new CommonPasswordValidator();
     PasswordCheckResult checkResult = validator.isValid(input);
     assertNotNull(checkResult);
     assertEquals(expected, checkResult.ok());

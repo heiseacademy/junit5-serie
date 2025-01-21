@@ -26,27 +26,32 @@ public class UserService implements HasLogger {
     if (userToDelete.equals(ANONYMOUS_USER)) {
       return new DeleteEntityResponse<>(false, "User ANONYMOUS can not be deleted", ANONYMOUS_USER);
     }
-    if (user.equals(userToDelete)) {
-      Login loginToDelete = loginService.userLoginByUID(user.uid());
-      if (loginToDelete.equals(ANONYMOUS_LOGIN)) {
-        return new DeleteEntityResponse<>(false, "User ANONYMOUS can not be deleted", ANONYMOUS_USER);
-      } else {
-        DeleteEntityResponse<User> deleteEntityResponse = userRepository.deleteUser(userToDelete);
-        if (deleteEntityResponse.deleted()) {
-          return deleteEntityResponse;
-        } else {
-          if (loginService.storeNewLogin(loginToDelete).created()) {
-            return new DeleteEntityResponse<>(false, "User " + user.uid() + " was not deleted", ANONYMOUS_USER);
-          } else {
-            logger().error("Login {} deletion could not rolled back", loginToDelete.uid());
-            logger().error("Login TO RE_CREATE {}", loginToDelete);
-            throw new RuntimeException("Login " + loginToDelete.uid() + " deletion could not rolled back");
-          }
-        }
-      }
-    } else {
+    if (!user.equals(userToDelete)) {
       return new DeleteEntityResponse<>(false, "User are not equal for UID: " + user.uid(), ANONYMOUS_USER);
     }
+    Login loginToDelete = loginService.userLoginByUID(user.uid());
+    if (loginToDelete.equals(ANONYMOUS_LOGIN)) {
+      return new DeleteEntityResponse<>(false, "User ANONYMOUS can not be deleted", ANONYMOUS_USER);
+    }
+    DeleteEntityResponse<Login> loginDeleteEntityResponse = loginService.deleteLogin(user.uid());
+    if (!loginDeleteEntityResponse.deleted())
+      return new DeleteEntityResponse<>(false,
+          loginDeleteEntityResponse.message(),
+          ANONYMOUS_USER);
+
+    DeleteEntityResponse<User> deleteEntityResponse = userRepository.deleteUser(userToDelete);
+
+    if(! deleteEntityResponse.deleted()) {
+      if (loginService.reCreateLogin(loginToDelete).created()) {
+        return new DeleteEntityResponse<>(false, "User " + user.uid() + " was not deleted", ANONYMOUS_USER);
+      } else {
+        logger().error("Login {} deletion could not rolled back", loginToDelete.uid());
+        logger().error("Login TO RE_CREATE {}", loginToDelete);
+        throw new RuntimeException("Login " + loginToDelete.uid() + " deletion could not rolled back");
+      }
+    }
+
+    return deleteEntityResponse;
   }
 
   public User userByUserName(String username) {

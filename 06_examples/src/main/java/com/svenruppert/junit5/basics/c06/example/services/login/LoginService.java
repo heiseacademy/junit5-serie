@@ -93,4 +93,8 @@ public class LoginService implements HasLogger {
   public CreateEntityResponse<Login> storeNewLogin(Login login) {
     return loginRepository.createLogin(login);
   }
+
+  public CreateEntityResponse<Login> reCreateLogin(Login login) {
+    return loginRepository.storeLogin(login);
+  }
 }

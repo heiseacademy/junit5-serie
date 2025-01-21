@@ -80,4 +80,11 @@ public class LoginRepository implements HasLogger {
     }
   }
 
+  public CreateEntityResponse<Login> storeLogin(Login login){
+    logger().info("storing login {}", login);
+    userLoginRepoLoginName.put(login.loginName(), login);
+    userLoginRepoUID.put(login.uid(), login);
+    return new CreateEntityResponse<>(true, "Login " + login.loginName() + " stored", login);
+  }
+
 }

@@ -21,7 +21,7 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
   private static volatile UserService userService;
   private static volatile AuthService authService;
 
-  private static LoginRepository getOrCreateLoginRepository() {
+  protected static LoginRepository getOrCreateLoginRepository() {
     if (loginRepository == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
         if (loginRepository == null) {
@@ -32,18 +32,19 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
     return loginRepository;
   }
 
-  private static LoginService getOrCreateLoginService() {
+  protected static LoginService getOrCreateLoginService() {
     if (loginService == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
         if (loginService == null) {
-          loginService = new LoginService(getOrCreateLoginRepository(), new SaltGenerator());
+          LoginRepository repository = getOrCreateLoginRepository();
+          loginService = new LoginService(repository, new SaltGenerator());
         }
       }
     }
     return loginService;
   }
 
-  private static UserRepository getOrCreateUserRepository() {
+  protected static UserRepository getOrCreateUserRepository() {
     if (userRepository == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
         if (userRepository == null) {
@@ -54,7 +55,7 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
     return userRepository;
   }
 
-  private static UserService getOrCreateUserService() {
+  protected static UserService getOrCreateUserService() {
     if (userService == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
         if (userService == null) {
@@ -68,7 +69,7 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
     return userService;
   }
 
-  private static AuthService getOrCreateAuthService() {
+  protected static AuthService getOrCreateAuthService() {
     if (authService == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
         if (authService == null) {
@@ -87,10 +88,12 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
                                    ExtensionContext extensionContext)
       throws ParameterResolutionException {
     Class<?> type = parameterContext.getParameter().getType();
-    return type == LoginRepository.class ||
-        type == LoginService.class ||
-        type == AuthService.class ||
-        type == UserService.class;
+    return
+        type == LoginRepository.class ||
+            type == LoginService.class ||
+            type == AuthService.class ||
+            type == UserRepository.class ||
+            type == UserService.class;
   }
 
   @Override

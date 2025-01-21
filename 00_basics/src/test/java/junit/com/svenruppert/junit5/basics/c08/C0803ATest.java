@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 class C0803ATest implements HasLogger {
 
-
   private static final Logger log = LoggerFactory.getLogger(C0803ATest.class);
 
   public static class BeforeAfterEachExtension
@@ -18,7 +17,6 @@ class C0803ATest implements HasLogger {
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
       log.info("After Each Extension activated");
-
     }
 
     @Override
@@ -26,7 +24,6 @@ class C0803ATest implements HasLogger {
       log.info("Before Each Extension activated");
     }
   }
-
 
   public static class BeforeAfterAllExtension
       implements BeforeAllCallback, AfterAllCallback {
@@ -43,29 +40,14 @@ class C0803ATest implements HasLogger {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   @Test @ExtendWith(BeforeAfterEachExtension.class)
-  void test001() { }
+  void test002() {}
 
   @Nested
   @ExtendWith(BeforeAfterAllExtension.class)
   class TestClass {
     @Test
-    void test002() { }
+    void test001() { }
   }
-
 
 }

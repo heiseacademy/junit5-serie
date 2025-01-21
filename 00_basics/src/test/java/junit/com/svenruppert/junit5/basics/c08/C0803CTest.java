@@ -15,25 +15,21 @@ class C0803CTest {
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.METHOD, ElementType.TYPE})
   @ExtendWith(DemoExceptionHandler.class)
-  public @interface IgnoreNPE {
-  }
+  public @interface IgnoreNPE{ }
 
   public static class DemoExceptionHandler
       implements TestExecutionExceptionHandler {
+
     @Override
     public void handleTestExecutionException(ExtensionContext context,
                                              Throwable throwable)
         throws Throwable {
-
-      // Logik zur Ausnahmebehandlung
+      //Logik zur Ausnahmebehandlung
       System.out.println("Test failed: " + context.getDisplayName());
       System.out.println("Exception: " + throwable.getMessage());
-
-      // Beispiel: Übersetze die Ausnahme in eine andere oder ignoriere sie
-      if (throwable instanceof RuntimeException) {
-        System.out.println("RuntimeException wurde abgefangen. Habe doch keine Lust dazu.");
+      if(throwable instanceof RuntimeException){
+        System.out.println("RuntimeException wurde abgefangen - Habe doch keine Lust dazu");
       } else {
-        // Andere Ausnahmen weiterleiten
         throw throwable;
       }
     }
@@ -44,7 +40,7 @@ class C0803CTest {
   public static class DemoClass {
     @Test
     void test001() {
-      System.out.println("test001");
+      System.out.println(" test001 started ");
       throw new NullPointerException("NPE - weil ich Lust dazu habe");
     }
   }
