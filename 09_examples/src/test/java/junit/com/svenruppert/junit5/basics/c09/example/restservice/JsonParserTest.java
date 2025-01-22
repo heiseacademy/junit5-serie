@@ -12,10 +12,10 @@ public class JsonParserTest {
   private final JsonParser jsonParser = new JsonParser();
 
   @Test
-  public void testParseJson_withValidJson() {
+  public void testConvertJson_withValidJsonToData() {
     String json = "{\"2025-01-20\":-5.0,\"2025-01-21\":-3.5,\"2025-01-22\":-7.8}";
 
-    Map<String, Double> result = jsonParser.parseJson(json);
+    Map<String, Double> result = jsonParser.convertJsonToData(json);
 
     assertNotNull(result, "Result should not be null");
     assertEquals(3, result.size(), "The map should contain 3 entries");
@@ -25,21 +25,21 @@ public class JsonParserTest {
   }
 
   @Test
-  public void testParseJson_withEmptyJson() {
+  public void testConvertJson_withEmptyJsonToData() {
     String json = "{}";
 
-    Map<String, Double> result = jsonParser.parseJson(json);
+    Map<String, Double> result = jsonParser.convertJsonToData(json);
 
     assertNotNull(result, "Result should not be null");
     assertTrue(result.isEmpty(), "The map should be empty");
   }
 
   @Test
-  public void testParseJson_withMalformedJson() {
+  public void testConvertJson_withMalformedJsonToData() {
     String json = "{\"2025-01-20\":-5.0,\"2025-01-21\":}";
 
     Exception exception = assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-      jsonParser.parseJson(json);
+      jsonParser.convertJsonToData(json);
     });
 
 //    String expectedMessage = "For input string: \"\"";
@@ -50,10 +50,10 @@ public class JsonParserTest {
   }
 
   @Test
-  public void testParseJson_withSingleEntry() {
+  public void testConvertJson_ToData_withSingleEntry() {
     String json = "{\"2025-01-20\":15.0}";
 
-    Map<String, Double> result = jsonParser.parseJson(json);
+    Map<String, Double> result = jsonParser.convertJsonToData(json);
 
     assertNotNull(result, "Result should not be null");
     assertEquals(1, result.size(), "The map should contain 1 entry");
@@ -61,10 +61,10 @@ public class JsonParserTest {
   }
 
   @Test
-  public void testParseJson_withAdditionalSpaces() {
+  public void testConvertJson_ToData_withAdditionalSpaces() {
     String json = "{ \"2025-01-20\" : -5.0 , \"2025-01-21\" : -3.5 }";
 
-    Map<String, Double> result = jsonParser.parseJson(json);
+    Map<String, Double> result = jsonParser.convertJsonToData(json);
 
     assertNotNull(result, "Result should not be null");
     assertEquals(2, result.size(), "The map should contain 2 entries");

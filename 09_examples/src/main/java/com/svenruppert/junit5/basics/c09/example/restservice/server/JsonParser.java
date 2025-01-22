@@ -3,7 +3,6 @@ package com.svenruppert.junit5.basics.c09.example.restservice.server;
 import com.svenruppert.dependencies.core.logger.HasLogger;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ public class JsonParser implements HasLogger {
   public static final String JSON_SEPARATOR = ",";
   public static final String VALUE_SEPARATOR = ":";
 
-  public Map<String, Double> parseJson(String json) {
+  public Map<String, Double> convertJsonToData(String json) {
     logger().info("Parsing JSON: {}", json);
     Map<String, Double> result = json
         .trim()
@@ -64,8 +63,6 @@ public class JsonParser implements HasLogger {
       jsonBuilder.setLength(jsonBuilder.length() - 1);
     }
     jsonBuilder.append("}");
-
-    String json = jsonBuilder.toString();
-    return json;
+    return jsonBuilder.toString();
   }
 }

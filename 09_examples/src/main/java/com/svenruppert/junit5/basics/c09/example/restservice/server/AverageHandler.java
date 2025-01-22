@@ -5,13 +5,14 @@ import com.sun.net.httpserver.HttpHandler;
 import com.svenruppert.dependencies.core.logger.HasLogger;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AverageHandler implements HttpHandler, HasLogger {
+import static java.nio.charset.StandardCharsets.UTF_8;
 
+public class AverageHandler
+    implements HttpHandler, HasLogger {
 
   private final AverageService averageService = new AverageService();
 
@@ -21,12 +22,12 @@ public class AverageHandler implements HttpHandler, HasLogger {
       logger().info("Received POST request");
       // Read the request body
       InputStream is = exchange.getRequestBody();
-      String body = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8))
+      String body = new BufferedReader(new InputStreamReader(is, UTF_8))
           .lines()
           .collect(Collectors.joining("\n"));
       logger().info("Body: {}", body);
       // Parse JSON manually
-      Map<String, Double> keyValuePairs = new JsonParser().parseJson(body);
+      Map<String, Double> keyValuePairs = new JsonParser().convertJsonToData(body);
       double average = averageService.calculateAverage(keyValuePairs);
       // Format the result
       DecimalFormat df = new DecimalFormat("0.00");
@@ -34,9 +35,9 @@ public class AverageHandler implements HttpHandler, HasLogger {
 
       // Send the response
       exchange.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
-      exchange.sendResponseHeaders(200, response.getBytes(StandardCharsets.UTF_8).length);
+      exchange.sendResponseHeaders(200, response.getBytes(UTF_8).length);
       OutputStream os = exchange.getResponseBody();
-      os.write(response.getBytes(StandardCharsets.UTF_8));
+      os.write(response.getBytes(UTF_8));
       os.close();
     } else {
       exchange.sendResponseHeaders(405, -1); // Method Not Allowed
