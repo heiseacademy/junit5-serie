@@ -1,4 +1,4 @@
-package junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced;
+package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

@@ -8,8 +8,10 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 
-public class CaseValidatorTests extends AbstractPasswordValidatorTest {
+public class CaseValidatorTests
+    extends AbstractPasswordValidatorTest {
 
+  @Override
   protected Stream<InputPair> generateInputPairs() {
     return Stream.of(
         new InputPair("helloWorld", true),
@@ -17,8 +19,8 @@ public class CaseValidatorTests extends AbstractPasswordValidatorTest {
     );
   }
 
+  @Override
   protected Supplier<PasswordValidator> validatorSupplier() {
     return CaseValidator::new;
   }
-
 }

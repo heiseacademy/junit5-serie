@@ -29,7 +29,7 @@ public class AverageRestServiceLifeCycle
     ExtensionContext.Store store = context.getStore(NAMESPACE);
     AverageRestServer service = store.get(AverageRestServiceLifeCycle.class,
         AverageRestServer.class);
-    logger().info("Average REST Service - shutting down at port " + service.getPort());
+    logger().info("Average REST Service - shutting down at port {}", service.getPort());
     service.stopServer();
     store.remove(AverageRestServiceLifeCycle.class);
     logger().info("removed Average REST Service service ");

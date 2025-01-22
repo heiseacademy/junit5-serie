@@ -8,7 +8,9 @@ public class AverageService implements HasLogger {
 
   public double calculateAverage(Map<String, Double> keyValuePairs) {
     logger().info("calculateAverage - keyValuePairs: {}", keyValuePairs);
-    double result = keyValuePairs.values().stream()
+    double result = keyValuePairs
+        .values()
+        .stream()
         .mapToDouble(Double::doubleValue)
         .average()
         .orElse(0.0);

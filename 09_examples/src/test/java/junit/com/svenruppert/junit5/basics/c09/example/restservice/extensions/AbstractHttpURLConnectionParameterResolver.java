@@ -9,7 +9,8 @@ import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URI;
 
-public abstract class AbstractHttpURLConnectionParameterResolver implements
+public abstract class AbstractHttpURLConnectionParameterResolver
+    implements
     ParameterResolver,
     AfterEachCallback,
     HasLogger {
@@ -22,16 +23,17 @@ public abstract class AbstractHttpURLConnectionParameterResolver implements
   public ExtensionContext.Namespace createHttpURLConnectionNameSpace(ExtensionContext context) {
     Method requiredTestMethod = context.getRequiredTestMethod();
     ExtensionContext.Namespace namespace = ExtensionContext.Namespace.create(requiredTestMethod.getName());
-    logger().info("Creating namespace for " + requiredTestMethod.getName());
-
+    logger().info("Creating namespace for {}", requiredTestMethod.getName());
     return namespace;
   }
 
   public HttpURLConnection createHttpConnection(ParameterContext parameterContext,
-                                 ExtensionContext extensionContext)
+                                                ExtensionContext extensionContext)
       throws ParameterResolutionException {
     var annotation = parameterContext.getAnnotatedElement().getAnnotation(Http.class);
-    if (annotation == null) { throw new ParameterResolutionException("No @Http annotation found"); }
+    if (annotation == null) {
+      throw new ParameterResolutionException("No @Http annotation found");
+    }
     String target = annotation.target();
     String url = "http://" + target + ":" + annotation.port() + annotation.path();
     logger().info("Using target: {}", url);
@@ -41,9 +43,9 @@ public abstract class AbstractHttpURLConnectionParameterResolver implements
       initHttpConnection(httpConnection);
       ExtensionContext.Namespace nameSpace = createHttpURLConnectionNameSpace(extensionContext);
       ExtensionContext.Store store = extensionContext.getStore(nameSpace);
-      logger().info("Using store: " + store);
+      logger().info("Using store: {}", store);
       String nameSpaceKey = getNameSpaceKey();
-      logger().info("Using namespace key: " + nameSpaceKey);
+      logger().info("Using namespace key: {}", nameSpaceKey);
       store.put(nameSpaceKey, httpConnection);
       return httpConnection;
     } catch (IOException e) {

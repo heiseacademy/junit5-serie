@@ -1,7 +1,7 @@
-package junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions;
+package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions;
 
 import com.svenruppert.dependencies.core.logger.HasLogger;
-import junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.VaadinFlowAppExtension.VaadinFlowTest;
+import junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.VaadinFlowAppExtension.VaadinFlowTest;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.openqa.selenium.By;
@@ -10,8 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static com.svenruppert.junit5.basics.c09.example.webapp.MainView.ID_USERNAME;
 import static java.time.Duration.ofSeconds;
-import static junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.WebdriverResolver.STORE_KEY_WEB_DRIVER;
-import static junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.WebdriverResolver.webDriverNameSpace;
+import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.STORE_KEY_WEB_DRIVER;
+import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.webDriverNameSpace;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class VaadinFlowWebDriverInitExtension implements BeforeEachCallback, HasLogger {
@@ -31,6 +31,6 @@ public class VaadinFlowWebDriverInitExtension implements BeforeEachCallback, Has
     String URL = annotation.target() + ":" + annotation.port();
     webDriver.get(URL);
     new WebDriverWait(webDriver, ofSeconds(10), ofSeconds(1))
-        .until(visibilityOfElementLocated(By.id(ID_USERNAME)));
+        .until(visibilityOfElementLocated(By.id(annotation.elementID())));
   }
 }

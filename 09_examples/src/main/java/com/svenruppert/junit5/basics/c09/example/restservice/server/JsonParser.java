@@ -3,6 +3,7 @@ package com.svenruppert.junit5.basics.c09.example.restservice.server;
 import com.svenruppert.dependencies.core.logger.HasLogger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,7 @@ public class JsonParser implements HasLogger {
         .flatMap(line -> {
           logger().info("Parsing line: {}", line);
           String[] keyValuePairs = line.split(JSON_SEPARATOR);
-          logger().info("keyValuePairs: {}", keyValuePairs);
+          logger().info("keyValuePairs: {}", (Object[]) keyValuePairs);
           List<Map.Entry<String, Double>> entries = new ArrayList<>(keyValuePairs.length);
           for (String keyValuePair : keyValuePairs) {
             String[] values = keyValuePair.split(VALUE_SEPARATOR);

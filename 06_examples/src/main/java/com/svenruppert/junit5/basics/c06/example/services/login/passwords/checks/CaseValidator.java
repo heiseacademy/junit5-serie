@@ -2,7 +2,9 @@ package com.svenruppert.junit5.basics.c06.example.services.login.passwords.check
 
 import com.svenruppert.dependencies.core.logger.HasLogger;
 
-public class CaseValidator extends AbstractPasswordvalidator implements HasLogger {
+public class CaseValidator
+    extends AbstractPasswordvalidator
+    implements HasLogger {
 
   @Override
   protected boolean isValidImpl(String password) {

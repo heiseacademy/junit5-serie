@@ -1,7 +1,9 @@
 package com.svenruppert.junit5.basics.c09.example.webapp;
 
+import com.svenruppert.dependencies.core.logger.HasLogger;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
@@ -9,7 +11,8 @@ import com.vaadin.flow.router.Route;
 
 @Route("")
 public class MainView
-    extends VerticalLayout {
+    extends VerticalLayout
+    implements HasLogger {
 
   public static final String ID_USERNAME = "username";
   public static final String ID_PASSWORD = "password";
@@ -21,7 +24,7 @@ public class MainView
   private final PasswordField passwordField;
   private final Button loginButton;
 
-  private Button navigateButton;
+  private final Button navigateButton;
 
   public MainView() {
     // Login-Formular
@@ -34,8 +37,14 @@ public class MainView
     loginButton = new Button("Login", this::onComponentEvent);
     loginButton.setId(ID_LOGIN_BUTTON);
 
-    navigateButton = new Button("Weiter zur nächsten Seite", event ->
-        navigateButton.getUI().ifPresent(ui -> ui.navigate("second")));
+    navigateButton = new Button(
+        "Dann mal los mit der Arbeit...",
+        event -> {
+          logger().info("Navigation Button pressed..");
+          Notification notification = new Notification();
+          notification.add("Here we are now logged in");
+          notification.open();
+        });
 
     navigateButton.setId(ID_NAVIGATE_BUTTON);
     navigateButton.setVisible(false); // Am Anfang verborgen
@@ -52,9 +61,12 @@ public class MainView
     // die "richtigen" Zugangsdaten sind.
     if ("testuser".equals(user) && "secret".equals(pass)) {
       // Login erfolgreich
+      logger().info("Logged in");
       navigateButton.setVisible(true);
     } else {
-      // Login fehlgeschlagen - In einem echten Szenario würde man hier ggf. eine Fehlermeldung anzeigen
+      logger().info("Login failed");
+      // Login fehlgeschlagen - In einem echten Szenario würde man hier
+      // ggf. eine Fehlermeldung anzeigen
     }
   }
 

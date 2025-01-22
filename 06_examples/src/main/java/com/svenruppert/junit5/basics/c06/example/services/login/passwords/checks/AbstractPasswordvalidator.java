@@ -3,7 +3,10 @@ package com.svenruppert.junit5.basics.c06.example.services.login.passwords.check
 import com.svenruppert.dependencies.core.logger.HasLogger;
 import com.svenruppert.junit5.basics.c06.example.services.login.passwords.PasswordCheckResult;
 
-public  abstract class AbstractPasswordvalidator implements PasswordValidator , HasLogger {
+public  abstract class AbstractPasswordvalidator
+    implements
+    PasswordValidator ,
+    HasLogger {
 
 
   @Override

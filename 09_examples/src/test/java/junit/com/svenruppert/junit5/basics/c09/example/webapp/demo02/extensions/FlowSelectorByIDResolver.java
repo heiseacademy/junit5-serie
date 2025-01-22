@@ -1,6 +1,6 @@
-package junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions;
+package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions;
 
-import junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.FlowSelectorByID;
+import junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.FlowSelectorByID;
 import org.junit.jupiter.api.extension.*;
 import org.openqa.selenium.WebDriver;
 
@@ -9,8 +9,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import static junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.WebdriverResolver.STORE_KEY_WEB_DRIVER;
-import static junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.WebdriverResolver.webDriverNameSpace;
+import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.STORE_KEY_WEB_DRIVER;
+import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.webDriverNameSpace;
 
 public class FlowSelectorByIDResolver
     implements ParameterResolver {

@@ -19,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PasswordValidatorTest {
 
-  private static final Logger log = LoggerFactory.getLogger(PasswordValidatorTest.class);
-
   public static Stream<Arguments> generateTestDataAll() {
     return Stream.of(
         Arguments.of((Supplier<PasswordValidator>) WhitespaceValidator::new, "Hello World", false),

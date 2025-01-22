@@ -55,11 +55,11 @@ public class AverageRestServiceClientParameterResolver
   @ExtendWith(AverageRestServiceLifeCycle.class)
   @ExtendWith(AverageRestServiceClientParameterResolver.class)
   public @interface AverageRestServiceClientLifeCycle {
-    String target() default "localhost";
-
-    int port() default 8080;
-
-    String path() default AverageRestServer.PATH;
+//    String target() default "localhost";
+//
+//    int port() default 8080;
+//
+//    String path() default AverageRestServer.PATH;
   }
 
 

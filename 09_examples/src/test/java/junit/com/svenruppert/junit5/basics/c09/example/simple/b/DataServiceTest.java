@@ -2,7 +2,9 @@ package junit.com.svenruppert.junit5.basics.c09.example.simple.b;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(DataServiceExtension.class)
 public class DataServiceTest {

@@ -1,6 +1,8 @@
 package junit.com.svenruppert.junit5.basics.c09.example.simple.e;
 
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 public class HierarchicalContextExtension
     implements BeforeAllCallback, BeforeEachCallback {

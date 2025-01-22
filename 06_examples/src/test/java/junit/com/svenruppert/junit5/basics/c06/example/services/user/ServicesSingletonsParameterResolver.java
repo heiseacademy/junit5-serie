@@ -13,7 +13,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-public class ServicesSingletonsParameterResolver implements ParameterResolver {
+public class ServicesSingletonsParameterResolver
+    implements ParameterResolver {
 
   private static volatile LoginRepository loginRepository;
   private static volatile LoginService loginService;
@@ -21,27 +22,30 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
   private static volatile UserService userService;
   private static volatile AuthService authService;
 
-  protected static LoginRepository getOrCreateLoginRepository() {
-    if (loginRepository == null) {
+  protected static AuthService getOrCreateAuthService() {
+    if (authService == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
-        if (loginRepository == null) {
-          loginRepository = new LoginRepository();
+        if (authService == null) {
+          authService = new AuthService(
+              getOrCreateLoginService(),
+              getOrCreateUserService());
         }
       }
     }
-    return loginRepository;
+    return authService;
   }
 
-  protected static LoginService getOrCreateLoginService() {
-    if (loginService == null) {
+  protected static UserService getOrCreateUserService() {
+    if (userService == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
-        if (loginService == null) {
-          LoginRepository repository = getOrCreateLoginRepository();
-          loginService = new LoginService(repository, new SaltGenerator());
+        if (userService == null) {
+          userService = new UserService(
+              getOrCreateUserRepository(),
+              getOrCreateLoginService());
         }
       }
     }
-    return loginService;
+    return userService;
   }
 
   protected static UserRepository getOrCreateUserRepository() {
@@ -55,45 +59,39 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
     return userRepository;
   }
 
-  protected static UserService getOrCreateUserService() {
-    if (userService == null) {
+  protected static LoginService getOrCreateLoginService() {
+    if (loginService == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
-        if (userService == null) {
-          userService = new UserService(
-              getOrCreateUserRepository(),
-              getOrCreateLoginService()
-          );
+        if (loginService == null) {
+          loginService = new LoginService(getOrCreateLoginRepository(), new SaltGenerator());
         }
       }
     }
-    return userService;
+    return loginService;
   }
 
-  protected static AuthService getOrCreateAuthService() {
-    if (authService == null) {
+  protected static LoginRepository getOrCreateLoginRepository() {
+    if (loginRepository == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {
-        if (authService == null) {
-          authService = new AuthService(
-              getOrCreateLoginService(),
-              getOrCreateUserService()
-          );
+        if (loginRepository == null) {
+          loginRepository = new LoginRepository();
         }
       }
     }
-    return authService;
+    return loginRepository;
   }
 
   @Override
   public boolean supportsParameter(ParameterContext parameterContext,
                                    ExtensionContext extensionContext)
       throws ParameterResolutionException {
+
     Class<?> type = parameterContext.getParameter().getType();
-    return
-        type == LoginRepository.class ||
-            type == LoginService.class ||
-            type == AuthService.class ||
-            type == UserRepository.class ||
-            type == UserService.class;
+    return type == LoginRepository.class ||
+        type == LoginService.class ||
+        type == UserRepository.class ||
+        type == UserService.class ||
+        type == AuthService.class;
   }
 
   @Override
@@ -101,7 +99,6 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
                                  ExtensionContext extensionContext)
       throws ParameterResolutionException {
     Class<?> type = parameterContext.getParameter().getType();
-
     if (type == LoginRepository.class) {
       return getOrCreateLoginRepository();
     }
@@ -117,7 +114,8 @@ public class ServicesSingletonsParameterResolver implements ParameterResolver {
     if (type == AuthService.class) {
       return getOrCreateAuthService();
     }
-    throw new IllegalArgumentException("Unsupported parameter type: " + type);
+
+    throw new ParameterResolutionException("Unsupported parameter: " + type);
   }
 
   @Retention(RetentionPolicy.RUNTIME)

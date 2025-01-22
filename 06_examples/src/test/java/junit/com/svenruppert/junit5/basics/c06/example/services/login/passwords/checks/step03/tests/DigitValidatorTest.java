@@ -7,12 +7,14 @@ import junit.com.svenruppert.junit5.basics.c06.example.services.login.passwords.
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class DigitValidatorTest extends AbstractPasswordValidatorTest {
+public class DigitValidatorTest
+    extends AbstractPasswordValidatorTest {
+
   @Override
   protected Stream<InputPair> generateInputPairs() {
     return Stream.of(
         new InputPair("hello3World", true),
-        new InputPair("helloworld", false)
+        new InputPair("helloWorld", false)
     );
   }
 

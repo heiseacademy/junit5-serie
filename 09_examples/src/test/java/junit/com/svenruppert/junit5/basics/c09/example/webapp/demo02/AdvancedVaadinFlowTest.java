@@ -1,14 +1,14 @@
-package junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced;
+package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02;
 
-import junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.VaadinFlowAppExtension.VaadinFlowTest;
-import junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.WebdriverResolver.UseWebDriver;
+import junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.VaadinFlowAppExtension.VaadinFlowTest;
+import junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.UseWebDriver;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 
 import static com.svenruppert.junit5.basics.c09.example.webapp.MainView.*;
-import static junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.WebdriverResolver.WebBrowser.CHROME;
+import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.WebBrowser.CHROME;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -29,7 +29,7 @@ class AdvancedVaadinFlowTest {
   }
 
   @Test
-  void name(FlowSelectorByID selector) {
+  void testLogin(FlowSelectorByID selector) {
     assertNotNull(selector);
 
     UIElements uiElements = uiElements(selector);
@@ -53,16 +53,14 @@ class AdvancedVaadinFlowTest {
   public record UIElements(WebElement usernameField,
                            WebElement passwordField,
                            WebElement loginButton) {
-    public WebElement setUserNameText(String txt) {
+    public void setUserNameText(String txt) {
       usernameField.click();
       usernameField.sendKeys(txt);
-      return usernameField;
     }
 
-    public WebElement setPasswordText(String txt) {
+    public void setPasswordText(String txt) {
       passwordField.click();
       passwordField.sendKeys(txt);
-      return passwordField;
     }
   }
 }

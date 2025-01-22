@@ -7,7 +7,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class AverageServiceTest {
+class AverageServiceV1Test {
 
   @Test
   public void testCalculateAverage_withValidData() {

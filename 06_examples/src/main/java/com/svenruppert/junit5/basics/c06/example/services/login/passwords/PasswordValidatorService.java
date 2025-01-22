@@ -22,7 +22,7 @@ public class PasswordValidatorService implements HasLogger {
     );
   }
 
-  public List<PasswordCheckResult> checkeRules(String password) {
+  public List<PasswordCheckResult> checkRules(String password) {
     return ruleChecks()
         .map(Supplier::get)
         .map(rule -> rule.isValid(password))

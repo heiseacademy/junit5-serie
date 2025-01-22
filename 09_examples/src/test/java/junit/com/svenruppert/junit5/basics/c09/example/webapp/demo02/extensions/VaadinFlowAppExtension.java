@@ -1,9 +1,9 @@
-package junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions;
+package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions;
 
 import com.svenruppert.dependencies.core.logger.HasLogger;
 import com.svenruppert.junit5.basics.c09.example.webapp.AppStarter;
 import com.svenruppert.vaadin.nano.CoreUIServiceJava;
-import junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.URLValidator;
+import junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.URLValidator;
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +15,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 public class VaadinFlowAppExtension
-    implements BeforeEachCallback, AfterEachCallback, HasLogger {
+    implements
+    BeforeEachCallback, AfterEachCallback,
+    HasLogger {
 
 
   public static final String STORE_KEY_WEB_APP = "WEB_APP";

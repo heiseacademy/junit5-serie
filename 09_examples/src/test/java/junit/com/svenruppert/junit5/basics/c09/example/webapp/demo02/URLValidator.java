@@ -1,4 +1,4 @@
-package junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced;
+package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02;
 
 import java.net.MalformedURLException;
 import java.net.URI;

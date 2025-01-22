@@ -9,6 +9,9 @@ import com.svenruppert.junit5.basics.c06.example.services.user.User;
 import com.svenruppert.junit5.basics.c06.example.services.user.UserService;
 import junit.com.svenruppert.junit5.basics.c06.example.services.user.ServicesSingletonsParameterResolver.SingletonService;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import static com.svenruppert.junit5.basics.c06.example.services.user.UserRepository.ANONYMOUS_USER;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceTest {
 
   private static void checkMaxMustermann(User user) {
-    assertNotEquals(ANONYMOUS_USER, user);
+    assertNotNull(user);
     assertNotEquals(-1, user.uid());
     assertEquals("Max", user.forename());
     assertEquals("Mustermann", user.surname());
@@ -26,6 +29,7 @@ public class UserServiceTest {
   void test001(
       @SingletonService UserService service,
       @SingletonService LoginService loginService) {
+
     CreateEntityResponse<User> createResponse = service.createUser(
         "max.mustermann",
         "SecureMe",
@@ -38,10 +42,11 @@ public class UserServiceTest {
     checkMaxMustermann(user);
     checkMaxMustermann(service.userByUserName("max.mustermann"));
     checkMaxMustermann(service.userByUID(user.uid()));
+
     UpdateEntityResponse<Login> loginUpdate = loginService.changePassword(
         user.uid(),
         "SecureMe",
-        "newPassword");
+        "password");
     assertNotNull(loginUpdate);
     assertTrue(loginUpdate.updated());
 
@@ -53,5 +58,8 @@ public class UserServiceTest {
     assertNotNull(deletedUser);
     assertEquals(-1, deletedUser.uid());
     assertEquals(ANONYMOUS_USER, deletedUser);
+
   }
+
+
 }

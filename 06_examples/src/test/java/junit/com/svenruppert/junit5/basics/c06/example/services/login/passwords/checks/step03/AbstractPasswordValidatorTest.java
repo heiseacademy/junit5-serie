@@ -18,26 +18,27 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @DisplayNameGeneration(PasswordValidatorDisplayNameGenerator.class)
 public abstract class AbstractPasswordValidatorTest {
 
-  @ParameterizedTest(name = "Test {index}: Input=\"{1}\", Expected={2}")
+  @ParameterizedTest(name = "Test {index}: Input = {1} - Expected = {2}")
   @MethodSource("validatorTestData")
-  public void testCaseValidator(Supplier<PasswordValidator> validatorSupplier,
-                                String input,
-                                boolean expectedResult) {
+  public void passwordValidatorTest(
+      Supplier<PasswordValidator> validatorSupplier,
+      String input,
+      boolean expectedResult){
+
     PasswordValidator validator = validatorSupplier.get();
     PasswordCheckResult checkResult = validator.isValid(input);
     assertNotNull(checkResult);
     assertEquals(expectedResult, checkResult.ok());
   }
 
-  protected Stream<Arguments> validatorTestData() {
+  protected Stream<Arguments> validatorTestData(){
     return generateInputPairs()
-        .map(pair -> Arguments.of(validatorSupplier(), pair.input, pair.expected));
+        .map(pair -> Arguments.of(
+            validatorSupplier(),
+            pair.input, pair.expected));
   }
 
   protected abstract Stream<InputPair> generateInputPairs();
-
   protected abstract Supplier<PasswordValidator> validatorSupplier();
-
-  public record InputPair(String input, boolean expected) {
-  }
+  public record InputPair(String input, boolean expected){}
 }

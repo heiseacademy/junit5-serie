@@ -2,7 +2,6 @@ package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo01_local;
 
 import com.svenruppert.junit5.basics.c09.example.webapp.MainView;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class MainViewLocalTest {

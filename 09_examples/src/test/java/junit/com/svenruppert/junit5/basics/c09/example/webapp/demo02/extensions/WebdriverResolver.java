@@ -1,4 +1,4 @@
-package junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions;
+package junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.extension.*;
@@ -15,7 +15,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.Optional;
 
-import static junit.com.svenruppert.junit5.basics.c09.example.webapp.advanced.extensions.WebdriverResolver.WebBrowser.CHROME;
+import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.WebBrowser.CHROME;
 
 
 public class WebdriverResolver

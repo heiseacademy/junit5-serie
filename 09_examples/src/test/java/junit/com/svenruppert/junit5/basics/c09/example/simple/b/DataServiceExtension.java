@@ -1,6 +1,10 @@
 package junit.com.svenruppert.junit5.basics.c09.example.simple.b;
 
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.ParameterResolver;
+
 import java.util.UUID;
 
 public class DataServiceExtension
