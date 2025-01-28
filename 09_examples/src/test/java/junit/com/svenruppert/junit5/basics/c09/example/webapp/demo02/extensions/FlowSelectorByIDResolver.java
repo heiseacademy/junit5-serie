@@ -18,22 +18,26 @@ public class FlowSelectorByIDResolver
   @Retention(RetentionPolicy.RUNTIME)
   @Target({ElementType.TYPE, ElementType.PARAMETER})
   @ExtendWith(FlowSelectorByIDResolver.class)
-  public @interface FlowSelector {}
+  public @interface FlowSelector{}
+
 
   @Override
-  public boolean supportsParameter(ParameterContext parameterContext,
-                                   ExtensionContext extensionContext)
+  public boolean supportsParameter(
+      ParameterContext parameterContext,
+      ExtensionContext extensionContext)
       throws ParameterResolutionException {
-    return parameterContext.getParameter().getType().isAssignableFrom(FlowSelectorByID.class);
+    return parameterContext.getParameter().getType().equals(FlowSelectorByID.class);
   }
 
   @Override
-  public Object resolveParameter(ParameterContext parameterContext,
-                                 ExtensionContext extensionContext)
+  public Object resolveParameter(
+      ParameterContext parameterContext,
+      ExtensionContext extensionContext)
       throws ParameterResolutionException {
+
     ExtensionContext.Store contextStore = extensionContext.getStore(webDriverNameSpace(extensionContext));
-    WebDriver webDriver = contextStore.get(STORE_KEY_WEB_DRIVER, WebDriver.class);
-    if (webDriver == null) { throw new ParameterResolutionException("No WebDriver found"); }
-    return new FlowSelectorByID(webDriver);
+    WebDriver driver = contextStore.get(STORE_KEY_WEB_DRIVER, WebDriver.class);
+    if (driver == null) { throw new ParameterResolutionException("No WebDriver found"); }
+    return new FlowSelectorByID(driver);
   }
 }

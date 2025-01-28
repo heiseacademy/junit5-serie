@@ -19,16 +19,14 @@ public class VaadinFlowAppExtension
     BeforeEachCallback, AfterEachCallback,
     HasLogger {
 
-
   public static final String STORE_KEY_WEB_APP = "WEB_APP";
 
-  public static ExtensionContext.Namespace webAppNameSpace(ExtensionContext extensionContext) {
-    return ExtensionContext.Namespace.create(extensionContext.getRequiredTestMethod());
+  public static ExtensionContext.Namespace webAppNameSpace(ExtensionContext context) {
+    return ExtensionContext.Namespace.create(context.getRequiredTestMethod());
   }
 
   @Override
-  public void afterEach(ExtensionContext context)
-      throws Exception {
+  public void afterEach(ExtensionContext context) throws Exception {
     ExtensionContext.Store store = context.getStore(webAppNameSpace(context));
     AppStarter appStarter = store.get(STORE_KEY_WEB_APP, AppStarter.class);
     appStarter.shutdown();
@@ -40,7 +38,7 @@ public class VaadinFlowAppExtension
     Class<?> testClass = context.getRequiredTestClass();
     VaadinFlowTest annotation = testClass.getAnnotation(VaadinFlowTest.class);
     if (annotation == null) {
-      throw new AssertionError("@VaadinFlowTest annotation is missing on class level");
+      throw new AssertionError("No @VaadinFlowTest annotation found - class level");
     }
 
     int port = annotation.port();
@@ -49,6 +47,7 @@ public class VaadinFlowAppExtension
     if (!isValid) {
       throw new AssertionError("VaadinFlowTest annotation: The target URL is not valid");
     }
+
     System.setProperty("vaadin.compatibilityMode", "false");
     System.setProperty("vaadin.productionMode", "false");
     String cliPort = CoreUIServiceJava.CLI_PORT + "=" + port;
@@ -57,9 +56,11 @@ public class VaadinFlowAppExtension
 
     AppStarter appStarter = new AppStarter();
     appStarter.executeCLI(args).startup();
+
     ExtensionContext.Store store = context.getStore(webAppNameSpace(context));
     store.put(STORE_KEY_WEB_APP, appStarter);
   }
+
 
   @Retention(RetentionPolicy.RUNTIME)
   @Target(ElementType.TYPE)
@@ -70,8 +71,9 @@ public class VaadinFlowAppExtension
   public @interface VaadinFlowTest {
     String target() default "http://localhost";
 
-    int port() default 8899;
+    int port() default 8080;
 
     String elementID();
   }
+
 }

@@ -3,12 +3,11 @@ package junit.com.svenruppert.junit5.basics.c09.example.restservice.demo01;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.com.svenruppert.junit5.basics.c09.example.restservice.demo01.AverageServiceTestDataSets.TestDatSetBuilder.newBuilder;
-
 public class AverageServiceTestDataSets {
 
   public static TestDataSet withValidData() {
-    return newBuilder()
+    return TestDataSetBuilder
+        .newBuilder()
         .setTestName("withValidData")
         .setAverage(-5.43)
         .setDelta(0.01)
@@ -19,7 +18,7 @@ public class AverageServiceTestDataSets {
   }
 
   public static TestDataSet withEmptyData() {
-    return new TestDataSet("withEmptyData",Map.of(), 0.0, 0.0);
+    return new TestDataSet("withEmptyData", Map.of(), 0.0, 0.0);
   }
 
   public static TestDataSet withSingleEntry() {
@@ -41,50 +40,52 @@ public class AverageServiceTestDataSets {
         3.33);
   }
 
-  public static class TestDatSetBuilder {
+
+  public static class TestDataSetBuilder {
     private final Map<String, Double> data = new HashMap<>();
     private Double average;
     private Double delta;
     private String testName;
 
-    private TestDatSetBuilder() {
+    private TestDataSetBuilder() {
     }
 
-    public static TestDatSetBuilder newBuilder(){
-      return new TestDatSetBuilder();
+    public static TestDataSetBuilder newBuilder() {
+      return new TestDataSetBuilder();
     }
 
-    public TestDatSetBuilder addData(String key, Double value) {
-      if (value == null) {
-        throw new IllegalArgumentException("value for map is null");
-      }
+    public TestDataSetBuilder addData(String key, Double value) {
       if (key == null) {
-        throw new IllegalArgumentException("data for key is null");
+        throw new IllegalArgumentException("key cannot be null");
+      }
+      if (value == null) {
+        throw new IllegalArgumentException("value cannot be null");
       }
       data.put(key, value);
       return this;
     }
 
-    public TestDatSetBuilder setAverage(Double average) {
+
+    public TestDataSetBuilder setAverage(Double average) {
       this.average = average;
       return this;
     }
 
-    public TestDatSetBuilder setDelta(Double delta) {
+    public TestDataSetBuilder setDelta(Double delta) {
       this.delta = delta;
       return this;
     }
 
-    public TestDatSetBuilder setTestName(String testName) {
+    public TestDataSetBuilder setTestName(String testName) {
       this.testName = testName;
       return this;
     }
 
     public TestDataSet build() {
-      return new TestDataSet(
-          this.testName, this.data, this.average, this.delta);
+      return new TestDataSet(this.testName, this.data, this.average, this.delta);
     }
   }
+
 
   public record TestDataSet(
       String testName,

@@ -2,6 +2,7 @@ package com.svenruppert.junit5.basics.c09.example.webapp;
 
 import com.svenruppert.dependencies.core.logger.HasLogger;
 import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -11,7 +12,7 @@ import com.vaadin.flow.router.Route;
 
 @Route("")
 public class MainView
-    extends VerticalLayout
+    extends Composite<VerticalLayout>
     implements HasLogger {
 
   public static final String ID_USERNAME = "username";
@@ -49,7 +50,8 @@ public class MainView
     navigateButton.setId(ID_NAVIGATE_BUTTON);
     navigateButton.setVisible(false); // Am Anfang verborgen
 
-    add(usernameField, passwordField, loginButton, navigateButton);
+    getContent()
+        .add(usernameField, passwordField, loginButton, navigateButton);
   }
 
   private void handleLogin() {

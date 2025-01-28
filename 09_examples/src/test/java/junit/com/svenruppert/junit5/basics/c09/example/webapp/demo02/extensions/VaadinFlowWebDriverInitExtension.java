@@ -8,25 +8,26 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.svenruppert.junit5.basics.c09.example.webapp.MainView.ID_USERNAME;
 import static java.time.Duration.ofSeconds;
 import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.STORE_KEY_WEB_DRIVER;
 import static junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.WebdriverResolver.webDriverNameSpace;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
-public class VaadinFlowWebDriverInitExtension implements BeforeEachCallback, HasLogger {
+public class VaadinFlowWebDriverInitExtension
+    implements BeforeEachCallback, HasLogger {
+
 
   @Override
   public void beforeEach(ExtensionContext extensionContext) throws Exception {
-    VaadinFlowTest annotation = extensionContext
-        .getRequiredTestClass()
-        .getAnnotation(VaadinFlowTest.class);
+    Class<?> testClass = extensionContext.getRequiredTestClass();
+    VaadinFlowTest annotation = testClass.getAnnotation(VaadinFlowTest.class);
     if (annotation == null) {
-      throw new AssertionError("Missing @VaadinFlowTest annotation");
+      throw new AssertionError("No @VaadinFlowTest annotation found");
     }
 
     ExtensionContext.Store contextStore = extensionContext.getStore(webDriverNameSpace(extensionContext));
     WebDriver webDriver = contextStore.get(STORE_KEY_WEB_DRIVER, WebDriver.class);
+
     webDriver.manage().window().maximize();
     String URL = annotation.target() + ":" + annotation.port();
     webDriver.get(URL);
