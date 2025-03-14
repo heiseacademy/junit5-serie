@@ -11,8 +11,8 @@
     <modules>
         <module>00_basics</module>
         <module>05_examples</module>
-        <module>09_examples</module>
         <module>06_examples</module>
+        <module>09_examples</module>
     </modules>
 
     <properties>

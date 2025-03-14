@@ -1,12 +1,10 @@
 package junit.com.svenruppert.junit5.basics.c03;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class C0306Test {
 
@@ -22,7 +20,17 @@ public class C0306Test {
 
   }
 
-  public static class Demo{
+  @Test
+  void test002() {
+
+    Demo a = new Demo(1, 2);
+    Demo b = new Demo(1, 2);
+
+    assertEquals(a, b);
+
+  }
+
+  public static class Demo {
     private int a;
     private int b;
 
@@ -43,16 +51,5 @@ public class C0306Test {
     public int hashCode() {
       return Objects.hash(a, b);
     }
-  }
-
-
-  @Test
-  void test002() {
-
-    Demo a = new Demo(1, 2);
-    Demo b = new Demo(1, 2);
-
-    assertEquals(a,b);
-
   }
 }

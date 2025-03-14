@@ -11,27 +11,34 @@ import static java.util.HashMap.newHashMap;
 
 public class LoginRepository implements HasLogger {
 
-  public final static Login ANONYMOUS_LOGIN = new Login();
-  private static final GlobalUIDGenerator globalUIDGenerator = GlobalUIDGenerator.getInstance();
-  private static final Map<String, Login> userLoginRepoLoginName = newHashMap(100);
-  private static final Map<Integer, Login> userLoginRepoUID = newHashMap(100);
+  public static final Login ANONYMOUS_LOGIN = new Login();
+  private static final GlobalUIDGenerator GLOBAL_UID_GENERATOR = GlobalUIDGenerator.getInstance();
+  private static final Map<String, Login> USER_LOGIN_REPO_LOGIN_NAME = newHashMap(100);
+  private static final Map<Integer, Login> USER_LOGIN_REPO_UID = newHashMap(100);
+
+
+  public void clearRepository() {
+    USER_LOGIN_REPO_LOGIN_NAME.clear();
+    USER_LOGIN_REPO_UID.clear();
+  }
+
 
   public Login userLoginByUID(int uid) {
-    return userLoginRepoUID.getOrDefault(uid, ANONYMOUS_LOGIN);
+    return USER_LOGIN_REPO_UID.getOrDefault(uid, ANONYMOUS_LOGIN);
   }
 
   public Login userLoginByLoginName(String loginName) {
-    return userLoginRepoLoginName.getOrDefault(loginName, ANONYMOUS_LOGIN);
+    return USER_LOGIN_REPO_LOGIN_NAME.getOrDefault(loginName, ANONYMOUS_LOGIN);
   }
 
   public DeleteEntityResponse<Login> deleteLogin(Login login) {
     logger().warn("deleting login {}", login);
-    userLoginRepoLoginName.remove(login.loginName());
-    userLoginRepoUID.remove(login.uid());
+    USER_LOGIN_REPO_LOGIN_NAME.remove(login.loginName());
+    USER_LOGIN_REPO_UID.remove(login.uid());
     return new DeleteEntityResponse<>(true, "Login " + login.loginName() + " deleted", login);
   }
 
-  public CreateEntityResponse<Login>  createLogin(Login login){
+  public CreateEntityResponse<Login> createLogin(Login login) {
     return createLogin(login.loginName(), login.passwordHash(), login.salt());
   }
 
@@ -39,28 +46,28 @@ public class LoginRepository implements HasLogger {
                                                  String passwordHash,
                                                  String salt) {
     logger().info("creating login {}", loginName);
-    if (userLoginRepoLoginName.containsKey(loginName)) {
+    if (USER_LOGIN_REPO_LOGIN_NAME.containsKey(loginName)) {
       return new CreateEntityResponse<>(false, "Login " + loginName + " already exists", ANONYMOUS_LOGIN);
     }
-    int nextUID = globalUIDGenerator.getNextUID();
+    int nextUID = GLOBAL_UID_GENERATOR.getNextUID();
     try {
       Login value = new Login(loginName, passwordHash, salt, nextUID);
-      userLoginRepoUID.put(nextUID, value);
-      userLoginRepoLoginName.put(value.loginName(), value);
+      USER_LOGIN_REPO_UID.put(nextUID, value);
+      USER_LOGIN_REPO_LOGIN_NAME.put(value.loginName(), value);
       return new CreateEntityResponse<>(true, "Login " + loginName + " created", value);
     } catch (Exception e) {
-      userLoginRepoUID.remove(nextUID);
-      userLoginRepoLoginName.remove(loginName);
+      USER_LOGIN_REPO_UID.remove(nextUID);
+      USER_LOGIN_REPO_LOGIN_NAME.remove(loginName);
       return new CreateEntityResponse<>(false, e.getMessage(), ANONYMOUS_LOGIN);
     }
   }
 
   public UpdateEntityResponse<Login> changePassword(int uid, String passwordHash, String salt) {
-    if (userLoginRepoUID.containsKey(uid)) {
-      Login login = userLoginRepoUID.get(uid);
+    if (USER_LOGIN_REPO_UID.containsKey(uid)) {
+      Login login = USER_LOGIN_REPO_UID.get(uid);
       Login newEntry = new Login(login.loginName(), passwordHash, salt, login.uid());
-      userLoginRepoUID.replace(uid, newEntry);
-      userLoginRepoLoginName.replace(login.loginName(), newEntry);
+      USER_LOGIN_REPO_UID.replace(uid, newEntry);
+      USER_LOGIN_REPO_LOGIN_NAME.replace(login.loginName(), newEntry);
       return new UpdateEntityResponse<>(true, "Login " + login.loginName() + " updated", newEntry);
     } else {
       logger().warn("trying to update not know user with UID {}", uid);
@@ -70,20 +77,20 @@ public class LoginRepository implements HasLogger {
 
   public UpdateEntityResponse<Login> updateLogin(Login login) {
     logger().info("updating login {}", login);
-    if (userLoginRepoLoginName.containsKey(login.loginName()) &&
-        userLoginRepoUID.containsKey(login.uid())) {
-      userLoginRepoLoginName.put(login.loginName(), login);
-      userLoginRepoUID.put(login.uid(), login);
+    if (USER_LOGIN_REPO_LOGIN_NAME.containsKey(login.loginName()) &&
+        USER_LOGIN_REPO_UID.containsKey(login.uid())) {
+      USER_LOGIN_REPO_LOGIN_NAME.put(login.loginName(), login);
+      USER_LOGIN_REPO_UID.put(login.uid(), login);
       return new UpdateEntityResponse<>(true, "Login " + login.uid() + " updated", login);
     } else {
       return new UpdateEntityResponse<>(false, "Login " + login.uid() + " not found / not updated", ANONYMOUS_LOGIN);
     }
   }
 
-  public CreateEntityResponse<Login> storeLogin(Login login){
+  public CreateEntityResponse<Login> storeLogin(Login login) {
     logger().info("storing login {}", login);
-    userLoginRepoLoginName.put(login.loginName(), login);
-    userLoginRepoUID.put(login.uid(), login);
+    USER_LOGIN_REPO_LOGIN_NAME.put(login.loginName(), login);
+    USER_LOGIN_REPO_UID.put(login.uid(), login);
     return new CreateEntityResponse<>(true, "Login " + login.loginName() + " stored", login);
   }
 

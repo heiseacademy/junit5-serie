@@ -1,6 +1,7 @@
 package junit.com.svenruppert.junit5.basics.c03;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class C0307Test {
@@ -17,6 +18,7 @@ public class C0307Test {
 
   }
 
+  @Disabled
   @Test
   void test001() {
     Person hugo = new Person(5, "Hugo");

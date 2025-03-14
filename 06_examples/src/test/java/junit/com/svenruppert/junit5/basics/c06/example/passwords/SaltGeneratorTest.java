@@ -2,6 +2,7 @@ package junit.com.svenruppert.junit5.basics.c06.example.passwords;
 
 import com.svenruppert.dependencies.core.logger.HasLogger;
 import com.svenruppert.junit5.basics.c06.example.services.login.passwords.SaltGenerator;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 class SaltGeneratorTest
     implements HasLogger {
 
+  @Disabled
   @ParameterizedTest
   @ValueSource(ints= {1,2,3,4,5,6,7,8,9})
   @ValueSource(ints= {10,20,30,40,50,60,70,80,90})

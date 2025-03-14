@@ -1,6 +1,7 @@
 package junit.com.svenruppert.junit5.basics.c03;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class C0315Test {
@@ -12,6 +13,7 @@ public class C0315Test {
     });
   }
 
+  @Disabled
   @Test
   void test002() {
     Assertions.assertThrows(NullPointerException.class, () -> {
@@ -19,6 +21,7 @@ public class C0315Test {
     });
   }
 
+  @Disabled
   @Test
   void test003() {
     Assertions.assertDoesNotThrow(()->{

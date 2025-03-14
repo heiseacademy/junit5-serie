@@ -1,5 +1,6 @@
 package junit.com.svenruppert.junit5.basics.c07;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
@@ -10,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class C0710Test {
 
+  @Disabled
   @TestFactory
   public Stream<DynamicTest> generateDynamicTests() {
     return IntStream

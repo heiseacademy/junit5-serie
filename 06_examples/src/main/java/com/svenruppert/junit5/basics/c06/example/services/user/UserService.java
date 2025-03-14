@@ -41,7 +41,7 @@ public class UserService implements HasLogger {
 
     DeleteEntityResponse<User> deleteEntityResponse = userRepository.deleteUser(userToDelete);
 
-    if(! deleteEntityResponse.deleted()) {
+    if (!deleteEntityResponse.deleted()) {
       if (loginService.reCreateLogin(loginToDelete).created()) {
         return new DeleteEntityResponse<>(false, "User " + user.uid() + " was not deleted", ANONYMOUS_USER);
       } else {

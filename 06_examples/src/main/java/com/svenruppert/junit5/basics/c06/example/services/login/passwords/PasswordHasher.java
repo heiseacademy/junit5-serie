@@ -17,12 +17,8 @@ public class PasswordHasher {
 
   public String hashPassword(String password, String salt) {
     try {
-      final KeySpec spec = new PBEKeySpec(
-          password.toCharArray(),
-          salt.getBytes(),
-          ITERATIONS,
-          KEY_LENGTH);
-      SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM);//not ThreadSafe
+      final KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), ITERATIONS, KEY_LENGTH);
+      SecretKeyFactory factory = SecretKeyFactory.getInstance(ALGORITHM); //not ThreadSafe
       byte[] hash = factory.generateSecret(spec).getEncoded();
       return Base64.getEncoder().encodeToString(hash);
     } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {

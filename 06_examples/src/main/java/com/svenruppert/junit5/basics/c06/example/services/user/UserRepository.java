@@ -11,23 +11,26 @@ import static java.util.HashMap.newHashMap;
 public class UserRepository
     implements HasLogger {
 
-  public final static User ANONYMOUS_USER = new User();
-  private static final Map<Integer, User> userRepo = newHashMap(100);
+  public static final User ANONYMOUS_USER = new User();
+  private static final Map<Integer, User> USER_REPO = newHashMap(100);
 
+  public void clearRepository() {
+    USER_REPO.clear();
+  }
 
   public User userByUID(int uid) {
-    return userRepo.getOrDefault(uid, ANONYMOUS_USER);
+    return USER_REPO.getOrDefault(uid, ANONYMOUS_USER);
   }
 
   public DeleteEntityResponse<User> deleteUser(User user) {
-    userRepo.remove(user.uid());
+    USER_REPO.remove(user.uid());
     return new DeleteEntityResponse<>(true, String.format("User %s deleted", user.uid()), user);
   }
 
 
   public CreateEntityResponse<User> createUser(int uid, String forename, String surname) {
     User value = new User(uid, forename, surname);
-    userRepo.put(uid, value);
+    USER_REPO.put(uid, value);
     return new CreateEntityResponse<>(true, "User " + uid + " created", value);
   }
 }

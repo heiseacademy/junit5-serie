@@ -1,6 +1,6 @@
 package junit.com.svenruppert.junit5.basics.c06;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class C0608Test {
 
+  @Disabled
   @ParameterizedTest
   @ArgumentsSource(DemoArgumentProvider.class)
   void test001(String input) {

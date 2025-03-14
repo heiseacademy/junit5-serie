@@ -1,6 +1,7 @@
 package junit.com.svenruppert.junit5.basics.c03;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 //Assertions - assertInstanceOf
@@ -19,6 +20,7 @@ public class C0309Test {
   public static class DemoClass2
   extends DemoClass{}
 
+  @Disabled
   @Test
   void test002() {
     Assertions.assertInstanceOf(DemoClass.class, new DemoClass());

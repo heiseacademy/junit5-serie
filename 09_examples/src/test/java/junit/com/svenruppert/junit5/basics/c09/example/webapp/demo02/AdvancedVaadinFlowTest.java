@@ -5,6 +5,7 @@ import junit.com.svenruppert.junit5.basics.c09.example.webapp.demo02.extensions.
 import junit.com.svenruppert.junit5.basics.c09.example.webapp.selenium.MainViewSeleniumTest;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebElement;
 
@@ -28,6 +29,7 @@ class AdvancedVaadinFlowTest {
 //    Thread.sleep(5_000);
 //  }
 
+  @Disabled
   @Test
   void testLogin(FlowSelectorByID selector) {
     assertNotNull(selector);

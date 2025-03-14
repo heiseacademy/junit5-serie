@@ -22,6 +22,11 @@ public class ServicesSingletonsParameterResolver
   private static volatile UserService userService;
   private static volatile AuthService authService;
 
+  public static void clearRepos(){
+    loginRepository.clearRepository();
+    userRepository.clearRepository();
+  }
+
   protected static AuthService getOrCreateAuthService() {
     if (authService == null) {
       synchronized (ServicesSingletonsParameterResolver.class) {

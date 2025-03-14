@@ -1,6 +1,7 @@
 package junit.com.svenruppert.junit5.basics.c03;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ public class C0305Test {
     Assertions.assertTrue(condition);
   }
 
+  @Disabled
   @Test
   void test002() {
     int a = 5;

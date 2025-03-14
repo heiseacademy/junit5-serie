@@ -8,10 +8,9 @@ import com.svenruppert.junit5.basics.c06.example.services.login.LoginService;
 import com.svenruppert.junit5.basics.c06.example.services.user.User;
 import com.svenruppert.junit5.basics.c06.example.services.user.UserService;
 import junit.com.svenruppert.junit5.basics.c06.example.services.user.ServicesSingletonsParameterResolver.SingletonService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 import static com.svenruppert.junit5.basics.c06.example.services.user.UserRepository.ANONYMOUS_USER;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,6 +22,11 @@ public class UserServiceTest {
     assertNotEquals(-1, user.uid());
     assertEquals("Max", user.forename());
     assertEquals("Mustermann", user.surname());
+  }
+
+  @AfterEach
+  void afterEach() {
+    ServicesSingletonsParameterResolver.clearRepos();
   }
 
   @Test

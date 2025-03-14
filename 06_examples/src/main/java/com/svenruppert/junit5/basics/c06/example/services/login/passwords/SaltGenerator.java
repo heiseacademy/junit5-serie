@@ -10,7 +10,7 @@ import java.util.Base64;
 public class SaltGenerator {
   public static final int DEFAULT_SALT_LENGTH = 16;
 
-  private static final Logger log = LoggerFactory.getLogger(SaltGenerator.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SaltGenerator.class);
   private static final String ALGORITHM = "DRBG";
 
   private static SecureRandom secureRandom;
@@ -22,7 +22,7 @@ public class SaltGenerator {
           try {
             secureRandom = SecureRandom.getInstance(ALGORITHM);
           } catch (NoSuchAlgorithmException e) {
-            log.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             secureRandom = new SecureRandom();
           }
         }

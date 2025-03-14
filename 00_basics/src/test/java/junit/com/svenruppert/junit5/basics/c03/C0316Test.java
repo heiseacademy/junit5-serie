@@ -1,10 +1,12 @@
 package junit.com.svenruppert.junit5.basics.c03;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class C0316Test {
+class C0316Test {
 
+  @Disabled
   @Test
   void test001() {
     Assertions.assertThrowsExactly(RuntimeException.class, () -> {

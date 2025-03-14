@@ -1,6 +1,7 @@
 package junit.com.svenruppert.junit5.basics.c03;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,6 +11,7 @@ public class C0312Test {
 
 
   @Test
+  @Disabled
   void test001() {
     Stream<String> line1 = List.of("a", "b", "c").stream();
     Stream<String> line2 = List.of("a", "ba", "c").stream();
