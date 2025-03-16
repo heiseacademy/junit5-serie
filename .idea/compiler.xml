@@ -6,13 +6,17 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="00_basics" />
-        <module name="09_examples" />
-        <module name="05_examples" />
-        <module name="06_examples" />
+        <module name="module_02_examples" />
+        <module name="module_02" />
+        <module name="module_01" />
+        <module name="module_03_examples" />
+        <module name="module_04" />
+        <module name="module_03" />
+        <module name="module_01_examples" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="00_basics" target="21" />
       <module name="08_examples" target="21" />
       <module name="xx_exmple_ollama" target="21" />
     </bytecodeTargetLevel>

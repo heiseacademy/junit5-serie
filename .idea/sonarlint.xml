@@ -3,7 +3,9 @@
   <component name="SonarLintProjectSettings">
     <option name="moduleMapping">
       <map>
-        <entry key="05_examples" value="00_examples" />
+        <entry key="module_01_examples" value="00_examples" />
+        <entry key="module_02_examples" value="06_examples" />
+        <entry key="module_03_examples" value="09_examples" />
       </map>
     </option>
   </component>
